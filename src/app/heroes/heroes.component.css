@@ -29,10 +29,13 @@
   left: .1em;
 }
 .heroes li a {
-      text-decoration: none;
-    color: #607D8B;
-    position: relative;
-    top: 4px;
+  text-decoration: none;
+  color: #607D8B;
+  position: relative;
+  width: 100%;
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 25px;
 }
 .heroes .badge {
   font-size: small;
@@ -47,4 +50,12 @@
   height: 1.8em;
   margin-right: .8em;
   border-radius: 4px 0 0 4px;
+}
+
+button.delete {
+    height: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    border-radius: 0px 4px 4px 0px;
 }
