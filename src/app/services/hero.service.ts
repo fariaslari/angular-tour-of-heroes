@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of} from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import { Hero } from './hero';
+import { Hero } from '../model/hero';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MessageService } from './message.service';
 
@@ -30,6 +30,14 @@ export class HeroService {
       .pipe(
         tap(heroes => this.log(`fetched heroes`)),
         catchError(this.handleError('getHeroes', []))
+      );
+  }
+
+  getPowers(): Observable<String[]>{
+    return this.http.get<String[]>('api/powers')
+      .pipe(
+        tap(powers => this.log(`fetched heroes`)),
+        catchError(this.handleError('getPowers', []))
       );
   }
 

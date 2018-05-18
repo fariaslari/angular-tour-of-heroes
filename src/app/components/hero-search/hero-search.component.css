@@ -2,9 +2,10 @@
 .search-result li {
   border-bottom: 1px solid gray;
   border-left: 1px solid gray;
-  border-right: 1px solid gray;
-  width:195px;
-  height: 16px;
+  border-right: 1px solid gray;    
+  display: block;
+  margin: 0 auto;
+  width: 200px;
   padding: 5px;
   background-color: white;
   cursor: pointer;
