@@ -1,6 +1,6 @@
 <div class="container">
   <h2 [hidden]="editMode">Hero Form</h2>
-  <form [formGroup]="heroForm">
+  <form [formGroup]="heroForm" (submit)="onSubmit(heroForm.value)">
     <div class="form-group">
       <label for="name">Name</label>
       <input type="text" class="form-control" id="name" formControlName="name">
@@ -14,17 +14,54 @@
     <div class="form-group">
       <label for="power">Hero Power</label>
       <select class="form-control"  id="power" formControlName="power">
-        <option value="undefined"> Select a power... </option>
+        <option value=""> Select a power... </option>
         <option *ngFor="let pow of powers" [value]="pow">{{pow}}</option>
       </select>
     </div>
 
     <div class="form-group">
-      <label for="alterEgo">Adresses</label>
-      <div>
-
+      <label>Adresses</label>
+      <div [hidden]="newAddress">
+        <div class="line">
+          <div class="right">
+            <button type="button" class="btn btn-success" (click)="newAddress=true">+</button>
+          </div>
+        </div>
       </div>
-      <table class="table table-hover" *ngIf="heroModel.addresses.length > 0">
+      <div class="inner-form" [hidden]="!newAddress"  formGroupName="address">
+        <div class="line">
+          <div class="col-1">
+            <label for="street">Street</label>
+            <input type="text" class="form-control" id="street" formControlName="street">
+          </div>
+        </div>
+        <div class="line">
+          <div class="col-3 col-3-2">
+            <label for="city">City</label>
+            <input type="text" class="form-control" id="city" formControlName="city">
+          </div>
+          <div class="col-3">
+            <label for="street">State</label>
+            <select class="form-control"  id="state" formControlName="state">
+              <option value=""> Select a state... </option>
+              <option value="CA">CA</option>
+              <option value="OH">OH</option>
+              <option value="VA">VA</option>
+            </select>
+          </div>
+        </div>
+        <div class="line">
+          <div class="col-2">
+            <label for="zip">Zip Code</label>
+            <input type="text" class="form-control" id="zip" formControlName="zip">
+          </div>
+          <div class="col-2 right">
+            <button type="button" class="btn btn-success" (click)="addAddressToList(heroForm.value.address); newAddress=false;">Add</button>
+            <button type="button" class="btn btn-danger" (click)="newAddress=false">Cancel</button>
+          </div>
+        </div>
+      </div>
+      <table class="table table-hover" *ngIf="heroModel.addresses && heroModel.addresses.length > 0">
         <thead>
         <tr>
           <th class="left">Street</th>
@@ -35,17 +72,16 @@
         </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let address of heroModel.addresses">
+          <tr *ngFor="let address of heroModel.addresses; let i = index">
             <td class="left">{{address.street}}</td>
             <td class="center">{{address.city}}</td>
             <td class="center">{{address.state}}</td>
             <td class="right">{{address.zip}}</td>
-            <td class="right"><button type="button" class="btn btn-danger" (click)="removeAddress(address.id)">x</button></td>
+            <td class="right"><button type="button" class="btn btn-danger" (click)="removeAddress(i)">x</button></td>
           </tr>
         </tbody>
       </table> 
     </div>
-
     <div [hidden]="editMode">
       <button type="submit" class="btn btn-success" [disabled]="!heroForm.valid">Submit</button>
       <button type="button" class="btn btn-danger" (click)="heroForm.reset()">Clear</button>

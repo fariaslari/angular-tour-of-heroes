@@ -2,3 +2,43 @@
     margin: 0 3px;
     width: 80px
 }
+
+.table .btn{
+    padding: 0;
+    height: 28px;
+    width: 28px;
+}
+
+.form-group .inner-form{    
+    padding: 10px;
+    border: 1px solid #cccccc;
+    border-radius: 10px;
+    background-color: #fbfbfb;
+}
+
+.form-group .line{
+    position: relative;
+    width: 100%;
+    padding: 5px 0;
+}
+    .form-group .line .col-1{
+        display: inline-block;
+        width: 100%;
+        padding: 0 10px;
+    }
+
+    .form-group .line .col-2{
+        display: inline-block;
+        width: 50%;
+        padding: 0 10px;
+    }
+
+    .form-group .line .col-3{
+        display: inline-block;
+        width: 33%;
+        padding: 0 10px;
+    }
+    
+        .form-group .line .col-3-2{
+            width: 67%;
+        }

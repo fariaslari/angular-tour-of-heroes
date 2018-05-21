@@ -1,8 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { HeroService } from '../../services/hero.service';
 import { Location } from '@angular/common';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Hero }    from '../../model/hero';
+import { Address }    from '../../model/address';
 
 @Component({
   selector: 'app-hero-form',
@@ -16,6 +17,7 @@ export class HeroFormComponent implements OnInit {
   heroModel= new Hero();
   powers: String[];
   submitted = false;
+  newAddress = true;
 
   constructor(
     private heroService: HeroService,
@@ -25,9 +27,11 @@ export class HeroFormComponent implements OnInit {
   ngOnInit() {
     this.getPowers();
     if(this.hero){
-      console.log(this.hero)
       this.heroModel = this.hero;
     }
+    if(this.heroModel.addresses && this.heroModel.addresses.length > 0)
+      this.newAddress = false;
+
     this.createForm();
   }
 
@@ -38,12 +42,12 @@ export class HeroFormComponent implements OnInit {
       name: [this.heroModel.name, Validators.required],
       alterEgo: [this.heroModel.alterEgo],
       power: [this.heroModel.power, Validators.required],
-      address: this.fb.group({ // <-- the child FormGroup
-        street: ['', Validators.required],
-        city: ['', Validators.required],
-        state: ['', Validators.required],
-        zip: ['', Validators.required]
-      }),
+      address: this.fb.group({
+        street: [''],
+        city: [''],
+        state: [''],
+        zip: ['']
+      })
     });
   }
 
@@ -53,23 +57,39 @@ export class HeroFormComponent implements OnInit {
   }
 
   onSubmit(hero: Hero) { 
+    this.heroModel.name = hero.name;
+    this.heroModel.alterEgo = hero.alterEgo;
+    this.heroModel.power = hero.power;
+
     if(this.editMode)
-      this.heroService.updateHero(hero)
+      this.heroService.updateHero(this.heroModel)
       .subscribe(() => this.goBack());
     else{
       this.submitted = true;
-      this.heroService.addHero(hero).subscribe();
+      this.heroService.addHero(this.heroModel).subscribe();
     }
   }
   
-
-  save(): void {
-    this.heroService.updateHero(this.hero)
-      .subscribe(() => this.goBack());
-  }
-
   goBack(): void {
     this.location.back();
+  }
+
+  removeAddress(address: number){
+    this.heroModel.addresses.splice(address, 1);
+  }
+
+  addAddressToList(addressForm: any){
+    let address: Address = {
+      street: addressForm.street,
+      city: addressForm.city,
+      state: addressForm.state,
+      zip: addressForm.zip
+    }
+    
+    if(!this.heroModel.addresses)
+      this.heroModel.addresses = [];
+
+    this.heroModel.addresses.push(address);
   }
 
 }
